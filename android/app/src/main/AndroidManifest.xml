@@ -3,6 +3,8 @@
     package="com.example.jakeoneim.fitec">
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
