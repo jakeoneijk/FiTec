@@ -9,8 +9,8 @@ public class FallDownCheck extends Thread{
     }
 
     public boolean isFallenDown(int gyroX, int gyroY , int gyroZ , int accelX , int accelY , int accelZ){
-        if(isProbremOccured) return true;
-        return true;
+        if(isProbremOccured) return false;
+        return false;
     }
 
     public void run(){ //thread start
