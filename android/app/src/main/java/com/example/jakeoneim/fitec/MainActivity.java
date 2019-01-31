@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean makeConnectionWithSensor(){
         //isConnected should be changed here
         isConnected = true;
-        receiveDataFromSensor();
+        controller();
         return false;
     }
 
