@@ -5,12 +5,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.telephony.SmsManager;
 import android.widget.Toast;
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 
 //1 is falling down, 2 is heart failure
 public class Emergency extends Activity{
     private String call_number = "17657015379";
     private String[] neibor_numbers = {"17657015379","17655864549"};
+    private BluetoothSPP bt2 = ((MainActivity)MainActivity.context).bt;
 
+    public void send(){//부저 울림 메소드
+        bt2.send("emergency", true);
+    }
+    //****************************************************************************여기까지 블루투스 통신
 
     public void sendMessage(int typeofemergency){
         int temp = 0;

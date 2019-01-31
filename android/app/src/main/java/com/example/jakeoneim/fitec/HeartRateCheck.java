@@ -16,7 +16,6 @@ public class HeartRateCheck extends Thread{
         this.em = new Emergency();
 
     }
-
     public boolean isProblem(int currentHertRate){ // if there is problem true
         if(isProbremOccured) return false;
         if(currentHertRate < standardHeartRateOfUser/2 || currentHertRate > standardHeartRateOfUser +40){
