@@ -36,6 +36,7 @@ public class HeartRateCheck extends Thread{
 
     public void problemOccured(){
         isProbremOccured = true;
+
         isProbremOccured = false;
 
     }
