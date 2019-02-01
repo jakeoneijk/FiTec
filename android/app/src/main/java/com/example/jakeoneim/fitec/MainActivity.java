@@ -123,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public int[] receiveDataFromSensor(){ // receive data
-        return new int[7];
+    public double[] receiveDataFromSensor(){ // receive data
+        return new double[4];
     }
 
     public void controller(){ //receive data and use it
-        int [] data;
+        double[] data;
         while (isConnected){
             data = receiveDataFromSensor();
             //receiveData here
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 hTest.start();
             }
 
-            if(fTest.isFallenDown(data[1],data[2],data[3],data[4],data[5],data[6])){
+            if(fTest.isFallenDown(data[1],data[2],data[3])){
                 fTest.start();
             }
         }
