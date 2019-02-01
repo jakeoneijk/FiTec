@@ -21,5 +21,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NEIGHBORS"/>
+    <Button
+        android:onClick="call_test"
+        android:text="call test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:onClick="msg_test"
+        android:text="message test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

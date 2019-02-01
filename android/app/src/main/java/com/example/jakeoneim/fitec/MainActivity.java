@@ -1,5 +1,6 @@
 package com.example.jakeoneim.fitec;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static Context context;
     FallDownCheck fTest;
     HeartRateCheck hTest;
     boolean isConnected;
@@ -75,4 +76,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void call_test(View view){
+        Emergency emergency = new Emergency(MainActivity.this);
+        emergency.call();
+    }
+    public void msg_test(View view){
+        Emergency emergency = new Emergency(MainActivity.this);
+        emergency.sendMessage(1);
+    }
 }
