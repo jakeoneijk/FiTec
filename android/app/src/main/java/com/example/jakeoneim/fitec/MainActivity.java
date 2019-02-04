@@ -1,5 +1,6 @@
 package com.example.jakeoneim.fitec;
 
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
@@ -140,5 +140,19 @@ public class MainActivity extends AppCompatActivity {
                 fTest.start();
             }
         }
+    }
+    //intent transform -> neighbors number show
+    public void neighbors(View view){
+        Intent i = new Intent(getApplicationContext(),PhonenumberSave.class);
+        startActivity(i);
+    }
+
+    public void call_test(View view){
+        Emergency emergency = new Emergency(MainActivity.this);
+        emergency.call();
+    }
+    public void msg_test(View view){
+        Emergency emergency = new Emergency(MainActivity.this);
+        emergency.sendMessage(1);
     }
 }

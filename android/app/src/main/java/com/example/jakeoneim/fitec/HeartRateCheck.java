@@ -13,7 +13,7 @@ public class HeartRateCheck extends Thread{
         this.isProbremOccured = false;
         this.numberOfProblemChecked = 0;
         this.standardHeartRateOfUser = 80;
-        this.em = new Emergency();
+        //this.em = new Emergency();
 
     }
 

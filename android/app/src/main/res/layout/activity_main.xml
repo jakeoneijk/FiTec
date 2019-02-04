@@ -16,6 +16,22 @@
         tools:layout_editor_absoluteY="142dp" />
 
     <Button
+        android:onClick="neighbors"
+        android:id="@+id/phoneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEIGHBORS"/>
+    <Button
+        android:onClick="call_test"
+        android:text="call test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:onClick="msg_test"
+        android:text="message test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+     <Button
         android:id="@+id/sendButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,6 +39,5 @@
         android:onClick="emergencyClick"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="142dp" />
-
 
 </LinearLayout>
