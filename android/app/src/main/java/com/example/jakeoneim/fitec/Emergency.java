@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 
 //1 is falling down, 2 is heart failure
 public class Emergency extends Activity {
@@ -26,7 +27,13 @@ public class Emergency extends Activity {
     }
 
     private String call_number = "17657015379";
+  
+    private BluetoothSPP bt2 = ((MainActivity)MainActivity.context).bt;
 
+    public void send(){//부저 울림 메소드
+        bt2.send("emergency", true);
+    }
+  
     public void sendMessage(int typeofemergency) {
         db = new Database(mcontext);
         sqLiteDatabase = db.getWritableDatabase();
@@ -34,6 +41,8 @@ public class Emergency extends Activity {
 
         startManagingCursor(cursor);
 
+    
+    
         String message = "Neighbors are fall down!!! Please visit and call 911!!";
         while (cursor.moveToNext()) {
             if (typeofemergency == 1) {

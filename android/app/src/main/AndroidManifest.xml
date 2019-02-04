@@ -24,6 +24,10 @@
         </activity>
         <activity android:name=".PhonenumberSave"></activity>
         <activity android:name=".PhonenumAdd" android:theme="@style/Base.Theme.AppCompat.Light.Dialog"></activity>
+
+        <activity android:name=".Emergency">
+
+        </activity>
     </application>
 
 </manifest>

@@ -17,7 +17,7 @@ public class HeartRateCheck extends Thread{
 
     }
 
-    public boolean isProblem(int currentHertRate){ // if there is problem true
+    public boolean isProblem(double currentHertRate){ // if there is problem true
         if(isProbremOccured) return false;
         if(currentHertRate < standardHeartRateOfUser/2 || currentHertRate > standardHeartRateOfUser +40){
             this.numberOfProblemChecked++;
@@ -36,6 +36,7 @@ public class HeartRateCheck extends Thread{
 
     public void problemOccured(){
         isProbremOccured = true;
+
         isProbremOccured = false;
 
     }
