@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Toast.makeText(getApplicationContext()
                         , "Connected to " + name + "\n" + address
                         , Toast.LENGTH_SHORT).show();
-                eg = new Emergency(getApplicationContext());
+                eg = Emergency.getInstance(getApplicationContext());
             }
 
             public void onDeviceDisconnected() { //연결해제
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Log.d("Sensor",event.values[0]+" , "+event.values[1]+" , "+event.values[2]);
                 if(fTest.isFallenDown(event.values[0],event.values[1],event.values[2])){
                     Toast.makeText(getApplicationContext(),"fall down detected",Toast.LENGTH_SHORT).show();
-                    //fTest.start();
+                    fTest.start();
                 }
             }
         }
@@ -191,11 +191,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void call_test(View view){
-        Emergency emergency = new Emergency(MainActivity.this);
+        Emergency emergency = Emergency.getInstance(MainActivity.this);
         emergency.call();
     }
     public void msg_test(View view){
-        Emergency emergency = new Emergency(MainActivity.this);
+        Emergency emergency = Emergency.getInstance(MainActivity.this);
         emergency.sendMessage(1);
     }
 
