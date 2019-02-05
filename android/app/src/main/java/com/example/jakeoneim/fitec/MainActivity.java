@@ -156,6 +156,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return new double[4];
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        synchronized (this){
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+                Log.d("Sensor",event.values[0]+" , "+event.values[1]+" , "+event.values[2]);
+                if(fTest.isFallenDown(event.values[0],event.values[1],event.values[2])){
+                    Toast.makeText(getApplicationContext(),"fall down detected",Toast.LENGTH_SHORT).show();
+                    //fTest.start();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
     public void controller(){ //receive data and use it
         double[] data;
         while (isConnected){
@@ -163,10 +181,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             //receiveData here
             if(hTest.isProblem(data[0])){
                 hTest.start();
-            }
-
-            if(fTest.isFallenDown(data[1],data[2],data[3])){
-                fTest.start();
             }
         }
     }
@@ -185,22 +199,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         emergency.sendMessage(1);
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        synchronized (this){
-            float var0, var1, var2;
-
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-                var0 = event.values[0];
-                var1 = event.values[1];
-                var2 = event.values[2];
-                Log.d("Sensor",var0+" , "+var1+" , "+var2);
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 }
