@@ -1,1 +1,16 @@
-/**/#define heartratePin A1#include "DFRobot_Heartrate.h"DFRobot_Heartrate heartrate(DIGITAL_MODE); ///< ANALOG_MODE or DIGITAL_MODEvoid setup() {  Serial.begin(115200);}void loop() {  uint8_t rateValue;  heartrate.getValue(heartratePin); ///< A1 foot sampled values  rateValue = heartrate.getRate(); ///< Get heart rate value   if(rateValue)  {    Serial.println(rateValue);  }  delay(20);}
+/*
+
+*/
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input on analog pin 0:
+  int sensorValue = analogRead(A1);
+  // print out the value you read:
+  Serial.println(sensorValue);
+  delay(500);        // delay in between reads for stability
+}
