@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext()
                         , "Connected to " + name + "\n" + address
                         , Toast.LENGTH_SHORT).show();
-                eg = new Emergency();
+                eg = new Emergency(getApplicationContext());
             }
 
             public void onDeviceDisconnected() { //연결해제
@@ -68,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        // 블루투스 데이터 수신시 처리
+        bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
+            public void onDataReceived(byte[] data, String message) {
+                Log.i("Check", "Message : " + message);
+            }
+        });
+
         //*********************************************************************
 
         fTest = new FallDownCheck(); // fallDown Object create
