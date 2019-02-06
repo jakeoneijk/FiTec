@@ -5,6 +5,10 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,7 +19,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
     public static Context context;
     FallDownCheck fTest;
     HeartRateCheck hTest;
@@ -24,10 +28,17 @@ public class MainActivity extends AppCompatActivity {
 
     Emergency eg ;
 
+    private SensorManager sensorManager;
+    private Sensor accelSensor; // Sensor object
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //******************accel Sensor*****************
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         //******************bluetooth communication*****************
         bt = new BluetoothSPP(this);
@@ -87,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public void emergencyClick(View v) {
         eg.send();
     }
+
     public void onStart() {
         super.onStart();
         if (!bt.isBluetoothEnabled()) { //
@@ -100,6 +112,22 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Sensor Delay Normal 0.2
+        sensorManager.registerListener(this, accelSensor , SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         bt.stopService(); //블루투스 중지
@@ -135,6 +163,24 @@ public class MainActivity extends AppCompatActivity {
         return new double[4];
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        synchronized (this){
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+                Log.d("Sensor",event.values[0]+" , "+event.values[1]+" , "+event.values[2]);
+                if(fTest.isFallenDown(event.values[0],event.values[1],event.values[2])){
+                    Toast.makeText(getApplicationContext(),"fall down detected",Toast.LENGTH_SHORT).show();
+                    //fTest.start();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
     public void controller(){ //receive data and use it
         double[] data;
         while (isConnected){
@@ -142,10 +188,6 @@ public class MainActivity extends AppCompatActivity {
             //receiveData here
             if(hTest.isProblem(data[0])){
                 hTest.start();
-            }
-
-            if(fTest.isFallenDown(data[1],data[2],data[3])){
-                fTest.start();
             }
         }
     }
@@ -163,4 +205,5 @@ public class MainActivity extends AppCompatActivity {
         Emergency emergency = new Emergency(MainActivity.this);
         emergency.sendMessage(1);
     }
+
 }
