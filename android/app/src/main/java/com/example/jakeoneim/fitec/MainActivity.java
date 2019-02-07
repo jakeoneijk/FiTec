@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 //Log.d("Sensor",event.values[0]+" , "+event.values[1]+" , "+event.values[2]);
                 if(fTest.isFallenDown(event.values[0],event.values[1],event.values[2])){
                     Toast.makeText(getApplicationContext(),"fall down detected",Toast.LENGTH_SHORT).show();
-                    fTest.start();
+                    emergency();
                 }
             }
         }
