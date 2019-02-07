@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int average=0;
     TextView average_check;
 
-    private SensorManager sensorManager;
-    private Sensor accelSensor; // Sensor object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +125,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         isConnected = false;
     }
 
-    /*emergency발생시를 버튼클릭으로 일단 대체*/
-    public void emergencyClick(View v) {
-        eg.send();
-    }
     public void emergency(){
         eg.send();
         stopbtn.setVisibility(View.VISIBLE);
@@ -255,13 +249,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         startActivity(i);
     }
 
-    public void call_test(View view){
-        Emergency emergency = Emergency.getInstance(MainActivity.this);
-        emergency.call();
-    }
-    public void msg_test(View view){
-        Emergency emergency = Emergency.getInstance(MainActivity.this);
-        emergency.sendMessage(1);
-    }
 
 }
