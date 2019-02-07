@@ -26,8 +26,6 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
 
-import static java.lang.Thread.sleep;
-
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     public static Context context;
     FallDownCheck fTest;
@@ -45,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int c=0;
     int average=0;
     TextView average_check;
+
+    private SensorManager sensorManager;
+    private Sensor accelSensor; // Sensor object
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         final TextView heartCheck = (TextView)findViewById(R.id.heart_check);
         count=(TextView)findViewById(R.id.count);
         average_check=(TextView)findViewById(R.id.average);
+        //******************accel Sensor*****************
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         //******************accel Sensor*****************
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -148,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     }
+
     public void onStart() {
         super.onStart();
         if (!bt.isBluetoothEnabled()) { //
@@ -256,4 +263,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Emergency emergency = Emergency.getInstance(MainActivity.this);
         emergency.sendMessage(1);
     }
+
 }
