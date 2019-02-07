@@ -10,11 +10,18 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Locale;
+
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
@@ -25,8 +32,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     HeartRateCheck hTest;
     boolean isConnected;
     public static BluetoothSPP bt;
-
+    boolean emergency_stop;
+    Button stopbtn;
+    boolean emergency;
     Emergency eg ;
+    TextView count;
+    private SensorManager sensorManager;
+    private Sensor accelSensor; // Sensor object
+    int value=0;
+    int c=0;
+    int average=0;
+    TextView average_check;
 
     private SensorManager sensorManager;
     private Sensor accelSensor; // Sensor object
@@ -35,6 +51,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        stopbtn = (Button)findViewById(R.id.stopbtn);
+        stopbtn.setVisibility(View.INVISIBLE);
+        final TextView heartCheck = (TextView)findViewById(R.id.heart_check);
+        count=(TextView)findViewById(R.id.count);
+        average_check=(TextView)findViewById(R.id.average);
+        //******************accel Sensor*****************
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         //******************accel Sensor*****************
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -83,10 +107,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // 블루투스 데이터 수신시 처리
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
             public void onDataReceived(byte[] data, String message) {
+                value+=Integer.parseInt(message);
+                c+=1;
+                average=(average+value)/c;
+                average_check.setText(String.valueOf(average));
                 Log.i("Check", "Message : " + message);
+                heartCheck.setText(message);
+                HeartRateCheck hc = new HeartRateCheck();
+                if(Double.valueOf(message) >170&& !emergency){
+                    emergency();
+                    emergency = true;
+                }
             }
         });
-
         //*********************************************************************
 
         fTest = new FallDownCheck(); // fallDown Object create
@@ -97,6 +130,29 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     /*emergency발생시를 버튼클릭으로 일단 대체*/
     public void emergencyClick(View v) {
         eg.send();
+    }
+    public void emergency(){
+        eg.send();
+        stopbtn.setVisibility(View.VISIBLE);
+        Toast.makeText(getApplicationContext(),"If you're not in an emergency, click stop button",Toast.LENGTH_LONG).show();
+
+        CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                count.setText(String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
+            }
+
+            public void onFinish() {
+                if(!emergency_stop){
+                    eg.sendMessage(2);
+                    eg.call();
+                }else{
+                    emergency = false;
+                    Toast.makeText(getApplicationContext(),"Stopped", Toast.LENGTH_LONG).show();
+                }
+            }
+        }.start();
+
+
     }
 
     public void onStart() {
@@ -158,7 +214,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         controller();
         return false;
     }
-
+    public void stop(View view){
+        emergency_stop = true;
+    }
     public double[] receiveDataFromSensor(){ // receive data
         return new double[4];
     }
@@ -167,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         synchronized (this){
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-                Log.d("Sensor",event.values[0]+" , "+event.values[1]+" , "+event.values[2]);
+                //Log.d("Sensor",event.values[0]+" , "+event.values[1]+" , "+event.values[2]);
                 if(fTest.isFallenDown(event.values[0],event.values[1],event.values[2])){
                     Toast.makeText(getApplicationContext(),"fall down detected",Toast.LENGTH_SHORT).show();
                     fTest.start();

@@ -57,8 +57,6 @@ public class Emergency extends Activity {
 
         startManagingCursor(cursor);
 
-    
-    
         String message = "Neighbors are fall down!!! Please visit and call 911!!";
         while (cursor.moveToNext()) {
             if (typeofemergency == 1) {
