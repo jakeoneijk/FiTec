@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Log.i("Check", "Message : " + message);
                 heartCheck.setText(message);
                 HeartRateCheck hc = new HeartRateCheck();
-                if(Double.valueOf(message) >170&& !emergency){
+                if(hTest.isProblem(Double.valueOf(message))&& !emergency){
                     emergency();
                     emergency = true;
                 }
