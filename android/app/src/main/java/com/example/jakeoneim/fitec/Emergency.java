@@ -22,8 +22,24 @@ public class Emergency extends Activity {
     SQLiteDatabase sqLiteDatabase;
     private Context mcontext;
 
-    public Emergency(Context context) {
+    private Emergency() {
+    }
+
+    private void setContext(Context context){
         mcontext = context;
+    }
+
+    private static class LazyHolder{
+        public static final Emergency Instance = new Emergency();
+    }
+
+    public static Emergency getInstance(Context context){
+        LazyHolder.Instance.setContext(context);
+        return LazyHolder.Instance;
+    }
+
+    public static Emergency getInstance(){
+        return LazyHolder.Instance;
     }
 
     private String call_number = "17657015379";
@@ -41,8 +57,6 @@ public class Emergency extends Activity {
 
         startManagingCursor(cursor);
 
-    
-    
         String message = "Neighbors are fall down!!! Please visit and call 911!!";
         while (cursor.moveToNext()) {
             if (typeofemergency == 1) {

@@ -1,5 +1,7 @@
 package com.example.jakeoneim.fitec;
 
+import android.util.Log;
+
 public class FallDownCheck extends Thread{
 
     boolean isProbremOccured;
@@ -13,7 +15,9 @@ public class FallDownCheck extends Thread{
 
     public boolean isFallenDown(double accelX , double accelY , double accelZ){
         if(isProbremOccured) return false;
-        if(gsvm(accelX,accelY,accelZ) > thresholdGsvm){
+        double value = gsvm(accelX,accelY,accelZ);
+        //Log.d("Debug",value+" , "+thresholdGsvm);
+        if(value > thresholdGsvm){
             if(angle(accelX,accelY,accelZ)>thresholdAngle){
                 return true;
             }

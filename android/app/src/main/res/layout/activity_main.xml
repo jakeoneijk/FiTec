@@ -21,16 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NEIGHBORS"/>
-    <Button
-        android:onClick="call_test"
-        android:text="call test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:onClick="msg_test"
-        android:text="message test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <!--
      <Button
         android:id="@+id/sendButton"
         android:layout_width="wrap_content"
@@ -39,5 +31,36 @@
         android:onClick="emergencyClick"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="142dp" />
+        -->
+
+    <Button
+        android:id="@+id/stopbtn"
+        android:onClick="stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop"/>
+
+    <TextView
+        android:layout_margin="30dp"
+        android:layout_gravity="center"
+        android:id="@+id/heart_check"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/average"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+    android:layout_margin="30dp"
+    android:layout_gravity="center"
+    android:id="@+id/count"
+    android:textSize="25dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
 
 </LinearLayout>
