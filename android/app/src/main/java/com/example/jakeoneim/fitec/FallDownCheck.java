@@ -4,17 +4,16 @@ import android.util.Log;
 
 public class FallDownCheck extends Thread{
 
-    boolean isProbremOccured;
     final double gravityAccel = 9.8;
     final double thresholdGsvm = gravityAccel*2.5;
     final double thresholdAngle = 60;
 
     public FallDownCheck(){
-        isProbremOccured=false;
+
     }
 
     public boolean isFallenDown(double accelX , double accelY , double accelZ){
-        if(isProbremOccured) return false;
+
         double value = gsvm(accelX,accelY,accelZ);
 
         //Log.d("Debug",value+" , "+thresholdGsvm);
@@ -25,16 +24,6 @@ public class FallDownCheck extends Thread{
             }
         }
         return false;
-    }
-
-    public void run(){ //thread start
-        problemOccured();
-    }
-
-    public void problemOccured(){
-        isProbremOccured = true;
-        isProbremOccured = false;
-
     }
 
     public double svm(double accelX , double accelY , double accelZ){
