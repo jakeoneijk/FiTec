@@ -18,9 +18,6 @@ https://github.com/WorldFamousElectronics/PulseSensor_Amped_Arduino/blob/master/
 
 //  Variables
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
-int blinkPin = 13;                // pin to blink led at each beat
-int fadePin = 5;                  // pin to do fancy classy fading blink at each beat
-int fadeRate = 0;                 // used to fade LED on with PWM on fadePin
 
 // Volatile Variables, used in the interrupt service routine!
 volatile int BPM;                   // int that holds raw Analog in 0. updated every 2mS
@@ -32,43 +29,66 @@ volatile boolean QS = false;        // becomes true when Arduoino finds a beat.
 // Regards Serial OutPut  -- Set This Up to your needs
 static boolean serialVisual =  true;   // Set to 'false' by Default.  Re-set to 'true' to see Arduino Serial Monitor ASCII Visual Pulse 
 
+String myString;
+int buzzer = 8;
+int led = 12; 
+int blueled = 11;
+boolean emergency = false;
+int emergencyNumber = 0;
 
 void setup(){
-  pinMode(blinkPin,OUTPUT);         // pin that will blink to your heartbeat!
-  pinMode(fadePin,OUTPUT);          // pin that will fade to your heartbeat!
   Serial.begin(9600);             // we agree to talk fast!
   Serial3.begin(9600);
+  pinMode(buzzer,OUTPUT);
+  pinMode(led,OUTPUT);
+  pinMode(blueled,OUTPUT);
   interruptSetup();                 // sets up to read Pulse Sensor signal every 2mS 
    // IF YOU ARE POWERING The Pulse Sensor AT VOLTAGE LESS THAN THE BOARD VOLTAGE, 
    // UN-COMMENT THE NEXT LINE AND APPLY THAT VOLTAGE TO THE A-REF PIN
 //   analogReference(EXTERNAL);   
 }
 
-
 //  Where the Magic Happens
 void loop(){
+ if(emergency){
+    emergencyNumber++;
+    if(emergencyNumber%2 != 0){
+        digitalWrite(buzzer, HIGH); // Buzzer on
+        digitalWrite(led,HIGH);
+        digitalWrite(blueled,LOW);
+        delay(500);
+    }else{
+          digitalWrite(buzzer, LOW); // Buzzer off
+          digitalWrite(led,LOW);
+          digitalWrite(blueled,HIGH);
+          delay(500);
+     }
+  }     
+     
+  while(Serial3.available()){  
+    if(Serial3.available()){
+      char data = (char)Serial3.read();
+      myString+=data;
+      if(myString.equals("emergency")){
+        int i=0;
+        emergency = true;
+      }
+      if(myString.equals("stop")){
+        emergency = false;
+        digitalWrite(buzzer, LOW); // Buzzer off
+        digitalWrite(led,LOW);
+        digitalWrite(blueled,LOW);
+        delay(500);
+      }
+   }
+  }
+  myString="";
   
-    serialOutput() ;       
-    
   if (QS == true){     // A Heartbeat Was Found
                        // BPM and IBI have been Determined
                        // Quantified Self "QS" true when arduino finds a heartbeat
-        fadeRate = 255;         // Makes the LED Fade Effect Happen
-                                // Set 'fadeRate' Variable to 255 to fade LED with pulse
         serialOutputWhenBeatHappens();   // A Beat Happened, Output that to serial.     
         QS = false;                      // reset the Quantified Self flag for next time    
   }
-     
-  ledFadeToBeat();                      // Makes the LED Fade Effect Happen 
   delay(100);                             //  take a break
 }
-
-
-
-
-
-void ledFadeToBeat(){
-    fadeRate -= 15;                         //  set LED fade value
-    fadeRate = constrain(fadeRate,0,255);   //  keep LED fade value from going into negative numbers!
-    analogWrite(fadePin,fadeRate);          //  fade LED
-  }

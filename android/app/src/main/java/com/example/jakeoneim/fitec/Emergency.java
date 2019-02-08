@@ -47,9 +47,9 @@ public class Emergency extends Activity {
     private BluetoothSPP bt2 = ((MainActivity)MainActivity.context).bt;
 
     public void send(){//부저 울림 메소드
-        bt2.send("emergency", true);
+        bt2.send("emergency", false);
     }
-  
+    public void stop() {bt2.send("stop",true);}
     public void sendMessage(int typeofemergency) {
         db = new Database(mcontext);
         sqLiteDatabase = db.getWritableDatabase();

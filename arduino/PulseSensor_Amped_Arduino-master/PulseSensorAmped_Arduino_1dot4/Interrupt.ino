@@ -1,6 +1,4 @@
 
-
-
 volatile int rate[10];                    // array to hold last ten IBI values
 volatile unsigned long sampleCounter = 0;          // used to determine pulse timing
 volatile unsigned long lastBeatTime = 0;           // used to find IBI
@@ -45,8 +43,7 @@ ISR(TIMER2_COMPA_vect){                         // triggered when Timer2 counts 
   // signal surges up in value every time there is a pulse
   if (N > 250){                                   // avoid high frequency noise
     if ( (Signal > thresh) && (Pulse == false) && (N > (IBI/5)*3) ){        
-      Pulse = true;                               // set the Pulse flag when we think there is a pulse
-      digitalWrite(blinkPin,HIGH);                // turn on pin 13 LED
+      Pulse = true;                               // set the Pulse flag when we think there is a pulse      
       IBI = sampleCounter - lastBeatTime;         // measure time between beats in mS
       lastBeatTime = sampleCounter;               // keep track of time for next pulse
 
@@ -63,8 +60,6 @@ ISR(TIMER2_COMPA_vect){                         // triggered when Timer2 counts 
         sei();                               // enable interrupts again
         return;                              // IBI value is unreliable so discard it
       }   
-
-
       // keep a running total of the last 10 IBI values
       word runningTotal = 0;                  // clear the runningTotal variable    
 
@@ -83,7 +78,6 @@ ISR(TIMER2_COMPA_vect){                         // triggered when Timer2 counts 
   }
 
   if (Signal < thresh && Pulse == true){   // when the values are going down, the beat is over
-    digitalWrite(blinkPin,LOW);            // turn off pin 13 LED
     Pulse = false;                         // reset the Pulse flag so we can do it again
     amp = P - T;                           // get amplitude of the pulse wave
     thresh = amp/2 + T;                    // set thresh at 50% of the amplitude

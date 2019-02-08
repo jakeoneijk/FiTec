@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         eg.send();
         stopbtn.setVisibility(View.VISIBLE);
         Toast.makeText(getApplicationContext(),"If you're not in an emergency, click stop button",Toast.LENGTH_LONG).show();
-
+        count.setVisibility(View.VISIBLE);
         CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
                 count.setText(String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
@@ -139,9 +139,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if(!emergency_stop){
                     eg.sendMessage(2);
                     eg.call();
+                    emergency_stop = false;
+                    stopbtn.setVisibility(View.INVISIBLE);
+                    count.setVisibility(View.INVISIBLE);
                 }else{
                     emergency = false;
                     Toast.makeText(getApplicationContext(),"Stopped", Toast.LENGTH_LONG).show();
+                    emergency_stop = false;
+                    stopbtn.setVisibility(View.INVISIBLE);
+                    count.setVisibility(View.INVISIBLE);
                 }
             }
         }.start();
@@ -210,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
     public void stop(View view){
         emergency_stop = true;
+        eg.stop();
     }
     public double[] receiveDataFromSensor(){ // receive data
         return new double[4];
